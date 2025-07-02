@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Calendar, Clock, History, Download, Save, Cloud } from 'lucide-react';
+import { Calendar, Clock, History, Download } from 'lucide-react';
 import SeatGrid from '@/components/SeatGrid';
 import ShowSelector from '@/components/ShowSelector';
 import DateSelector from '@/components/DateSelector';
@@ -22,7 +22,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg border-r">
+      <div className="w-72 bg-white shadow-lg border-r flex flex-col">
         <div className="p-6 border-b">
           <h1 className="text-2xl font-bold text-gray-800">Theatre Booking</h1>
           <p className="text-sm text-gray-600 mt-1">Screen 1 - Staff Portal</p>
@@ -45,8 +45,18 @@ const Index = () => {
           ))}
         </nav>
 
+        {/* Controls in Sidebar for Booking View */}
+        {activeView === 'booking' && (
+          <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+            <DateSelector />
+            <ShowSelector />
+            <ControlsPanel />
+            <ReportPreview />
+          </div>
+        )}
+
         {/* Status Info */}
-        <div className="absolute bottom-0 left-0 right-0 w-64 p-4 border-t bg-gray-50">
+        <div className="p-4 border-t bg-gray-50 mt-auto">
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-600">Status:</span>
             <div className="flex items-center">
@@ -64,13 +74,13 @@ const Index = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-xl font-semibold">
-                {activeView === 'booking' && 'Seat Booking'}
+                {activeView === 'booking' && 'Multi-Section Seat Layout'}
                 {activeView === 'history' && 'Booking History'}
                 {activeView === 'reports' && 'Reports & Analytics'}
               </h2>
               {activeView === 'booking' && (
                 <p className="text-gray-600 mt-1">
-                  {selectedDate} • {selectedShow} Show
+                  {selectedDate} • {selectedShow} Show • Kiosk Mode
                 </p>
               )}
             </div>
@@ -82,25 +92,18 @@ const Index = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 overflow-hidden">
           {activeView === 'booking' && (
-            <div className="grid grid-cols-12 gap-6 h-full">
-              {/* Left Panel - Controls */}
-              <div className="col-span-3 space-y-6">
-                <DateSelector />
-                <ShowSelector />
-                <ControlsPanel />
-                <ReportPreview />
-              </div>
-
-              {/* Right Panel - Seat Grid */}
-              <div className="col-span-9">
-                <SeatGrid />
-              </div>
+            <div className="h-full p-6">
+              <SeatGrid />
             </div>
           )}
 
-          {activeView === 'history' && <BookingHistory />}
+          {activeView === 'history' && (
+            <div className="p-6">
+              <BookingHistory />
+            </div>
+          )}
           
           {activeView === 'reports' && (
             <div className="text-center py-12">
