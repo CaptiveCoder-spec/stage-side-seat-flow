@@ -131,7 +131,7 @@ const createInitialSeats = (): Seat[] => {
           status,
           section: section.name
         });
-      }
+      });
     });
   });
   
